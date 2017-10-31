@@ -5,7 +5,7 @@ import { storeManager } from './store';
 import { Provider } from 'react-redux';
 import 'antd/dist/antd.css';
 
-storeManager.initState(require('./store/menu').default);
+storeManager.initState(require('./model/menu').default);
 
 ReactDOM.render(
     <Provider store={ storeManager.store }>

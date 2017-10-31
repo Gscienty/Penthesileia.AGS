@@ -20,9 +20,11 @@ export const storeManager = {
                 if (!(direct[0] in storeManager.effects)) { return state; }
                 if (!(direct[1] in storeManager.effects[direct[0]])) { return state; }
 
-                storeManager.effects[direct[0]][direct[1]].call(this, state, action,
-                    payload => storeManager.store.dispatch({ type: direct[0], payload })
-                );
+                storeManager
+                    .effects[direct[0]][direct[1]]
+                    .call(storeManager.store, state, action)
+                    .then(payload => storeManager.store.dispatch({ type: direct[0], payload }))
+
             }
 
             return state;
