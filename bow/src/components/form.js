@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Form, Input, Select, DatePicker, Cascader, Row, Col, Radio, Button } from 'antd';
+import moment from 'moment';
+import { Modal, Form, Input, Select, DatePicker, Cascader, Row, Col, Radio, Button, Rate, InputNumber } from 'antd';
 
 class FormComponent extends Component {
 
@@ -11,6 +12,15 @@ class FormComponent extends Component {
 
             this.props.onSubmit(values);
         });
+    }
+
+    transferValue(value, type) {
+        if (type === 'date') {
+            return moment(value);
+        }
+        else {
+            return value;
+        }
     }
 
     render() {
@@ -66,8 +76,12 @@ class FormComponent extends Component {
             profile_rows.map((row, index) => {
                 let contain_property_count = row.length;
                 let property_span = Math.floor(24 / contain_property_count) - 1;
-                return <Row key={ index } style={{ marginBottom: 12 }}> {
-                    row.map(property => <Col key={ property.index } span={ property_span } pull={ 1 } offset={ 1 }>
+                return <Row key={ index } style={{ marginBottom: 0 }}> {
+                    row.map(property => <Col
+                        key={ property.index }
+                        span={ property_span }
+                        pull={ 1 }
+                        offset={ 1 }>
                         <Form.Item
                             label={ property.name }
                             hasFeedback
@@ -75,7 +89,9 @@ class FormComponent extends Component {
                             {this.props.form.getFieldDecorator(property.index, {
                                 rules: property.rules,
                                 initialValue: this.props.dataSource
-                                    ? this.props.dataSource[property.index]
+                                    ? this.transferValue(
+                                        this.props.dataSource[property.index],
+                                        property.type)
                                     : null
                             })(
                                 (() => {
@@ -84,6 +100,7 @@ class FormComponent extends Component {
                                         case 'select': return <Select placeholder={ property.message }>
                                             { property.options.map(opt => <Select.Option
                                                 value={ opt.value }
+                                                style={{ width: '100%' }}
                                                 key={ opt.key ? opt.key : opt.value }>
                                                     { opt.name ? opt.name : opt.value }
                                                 </Select.Option>)  }
@@ -100,6 +117,7 @@ class FormComponent extends Component {
                                         />;
                                         case 'textarea': return <Input
                                             type="textarea"
+                                            rows={ 5 }
                                             placeholder={ property.message }
                                         />;
                                         case 'radio': return <Radio.Group>
@@ -109,6 +127,13 @@ class FormComponent extends Component {
                                                     { opt.name ? opt.name : opt.value }
                                                 </Radio>) }
                                         </Radio.Group>
+                                        case 'rate': return <Rate allowHalf />
+                                        case 'money': return <InputNumber
+                                            style={{ width: '100%' }}
+                                            step={ 0.01 }
+                                            formatter={ value => `￥ ${value}` }
+                                            parser={ value => parseFloat(value.replace(/￥| /, '')) }
+                                        />
                                         default: return <Input placeholder={ property.message } />;
                                     }
                                 })()
@@ -118,10 +143,21 @@ class FormComponent extends Component {
                 } </Row>
             })}
             <Form.Item>
-                <Button type="primary" htmlType="submit">提交</Button>
+                <Button type="primary" htmlType="submit">{ this.props.submitText ? this.props.submitText : '提交' }</Button>
             </Form.Item>
         </Form>;
     }
 }
 
-export default Form.create()(FormComponent);
+export const CommonForm = Form.create()(FormComponent);
+
+export class ModalForm extends Component {
+    render() {
+        return <Modal
+            visible={ this.props.visible }
+            footer={ null }
+            onCancel={ () => this.setState({ visible: false }) }>
+            <CommonForm { ...this.props } />
+        </Modal>
+    }
+}

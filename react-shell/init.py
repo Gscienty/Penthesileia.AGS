@@ -1,4 +1,5 @@
 import os
+import functools
 
 package_content = '''{
     "name": "donysus",
@@ -35,4 +36,8 @@ router = open('package.json', 'w')
 router.write(package_content)
 router.close()
 
-os.system('cnpm install')
+#os.system('cnpm install')
+
+for folder in [ 'src', 'public', 'src\\components', 'src\\pages', 'src\\utils' ]:
+    print('mkdir %s'%folder)
+    os.system('mkdir %s'%folder)
