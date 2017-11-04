@@ -36,11 +36,13 @@ for root in os.walk('src/pages/'):
         finally_name = dir_name + '/' + name
 
         path = finally_name[6:]
+        append_exact = ' '
         if path == 'index':
             path = ''
+            append_exact = ' exact '
 
-        l.append('        <Route path="/%s%s" component={ require("./%s").default } />'%(
-             path, uri_params, finally_name
+        l.append('        <Route%spath="/%s%s" component={ require("./%s").default } />'%(
+             append_exact, path, uri_params, finally_name
         ))
 result = prefix_desc
 

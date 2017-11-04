@@ -22,7 +22,7 @@ export const storeManager = {
 
                 storeManager
                     .effects[direct[0]][direct[1]]
-                    .call(storeManager.store, state, action)
+                    .call(storeManager.store, state[direct[0]], action)
                     .then(payload => {
                         if (payload) {
                             storeManager.store.dispatch({ type: direct[0], payload });
