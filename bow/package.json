@@ -1,24 +1,25 @@
 {
-  "name": "donysus",
+  "name": "penthesileia-bow",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "antd": "^2.13.4",
     "locales": "^0.0.2",
-    "moment": "2.18.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.14",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "walk": "^2.3.9"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "adapt": "node ./scripts/generate_page.js"
   },
   "proxy": {
     "^/api": {

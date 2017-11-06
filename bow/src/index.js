@@ -1,16 +1,10 @@
-import React from "react";
-import ReactDOM from 'react-dom';
-import registerServiceWorker from './registerServiceWorker';
-import { storeManager } from './store';
-import { Provider } from 'react-redux';
-import 'antd/dist/antd.css';
+import App from './penthesileia/penthesileia-bow';
+import { HashRouter } from 'react-router-dom';
 
-storeManager.initState(require('./model/menu').default);
+let app = new App();
 
-ReactDOM.render(
-    <Provider store={ storeManager.store }>
-        { require('./router').default }
-    </Provider>,
-    document.getElementById('root')
-);
-registerServiceWorker();
+app.addModel(require('./models/category').default);
+
+app.addPage({ path: '/', exact: true, component: require('./router/index').default })
+
+app.run(document.getElementById('root'), HashRouter)
