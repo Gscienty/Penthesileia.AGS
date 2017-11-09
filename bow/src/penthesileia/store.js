@@ -51,7 +51,7 @@ function _reducer(store, state, { type, payload }) {
         let action = direct[1];
         if (namespace in this._effects && action in this._effects[namespace]) {
             this._effects[namespace][action]
-                .call(store, { create, update, remove, get }, payload);
+                .call(store, { create, update, remove, get }, { payload, state: state[namespace] });
         }
         else if (namespace in this._reduces && action in this._reduces[namespace]) {
             let next = this._reduces[namespace][action]
